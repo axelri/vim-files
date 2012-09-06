@@ -81,6 +81,9 @@
     " C and D commands.
     nnoremap Y y$
 
+    " Map Q to q to avoid ex mode by mistake
+    nnoremap Q q
+
     " Press ht (dvorak homerow) instead of ESC
     imap ht <Esc> 
 
@@ -224,6 +227,7 @@
     " }
     " HTML settings {
         " No textwidth
+        " Smaller tabs
         au BufNewFile,Bufread *.html set textwidth=0
         au BufNewFile,Bufread *.html set columns=89
         au BufNewFile,Bufread *.html set shiftwidth=2
