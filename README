@@ -2,25 +2,4 @@ vim-files
 =========
 
 Vim config files for different machines
-
-Source by putting this function in your local .vimrc:
-
-function! GetNetVimrc(vimrc_url)
-       source $VIMRUNTIME/plugin/netrwPlugin.vim
-       Nread a:vimrc_url
-       let tmpfile = tempname()
-       save! tmpfile
-       source tmpfile
-       delete(tmpfile)
-       enew
-endfunction
-
-then either call the function manually or add this line to local .vimrc:
-call GetNetVimrc("https://raw.github.com/AxelRiese/vim-files/master/.vimrc")
-
-TODO
-=========
-
-Create some sort of caching system to save the online .vimrc locally
-everytime you call the function. In case of connection malfunction at least
-a somewhat fresh .vimrc will be available locally.
+Updated to make use of Vundle
