@@ -27,7 +27,6 @@
 " }
 
 " GUI commands and keymaps
-    
     command Scroll set guioptions+=Rr
     command Noscroll set guioptions-=Rr
 
@@ -37,5 +36,13 @@
         map <D-b> :SCCompile<Return>
         map <D-B> :SCCompileRun<Return>
         map <D-r> :MRU<Return>
+        map <D-e> :cwindow<Return>
+        map <D-E> :cclose<Return>
+
+         " Command-P for the control-p plugin
+        macmenu &File.Print key=<nop>
+        map <D-p> :CtrlPMixed<cr>
+        imap <D-p> <esc>:CtrlPMixed<cr>
+
     endif
 " }

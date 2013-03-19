@@ -1,7 +1,7 @@
 " My Vimrc file
 " Maintainer: Axel Riese                                                       
 
-" Vundle setup {
+" Bundle setup {
     set nocompatible
     filetype off
 
@@ -15,50 +15,47 @@
     " github repos
     Bundle 'Lokaltog/vim-easymotion'
     Bundle 'altercation/vim-colors-solarized'
-    " Bundle 'davidhalter/jedi-vim'
+    Bundle 'davidhalter/jedi-vim'
     Bundle 'ervandew/supertab'
     Bundle 'jiangmiao/auto-pairs'
+    Bundle 'jnwhiteh/vim-golang'
     Bundle 'kien/ctrlp.vim'
     Bundle 'michaeljsmith/vim-indent-object'
     Bundle 'msanders/snipmate.vim'
+    Bundle 'nvie/vim-flake8'
+    Bundle 'olethanh/Vim-nosecompiler'
+    Bundle 'reinh/vim-makegreen'
     Bundle 'scrooloose/nerdtree'
+    Bundle 'sickill/vim-pasta'
     Bundle 'tomtom/tcomment_vim'
     Bundle 'tpope/vim-endwise'
     Bundle 'tpope/vim-fugitive'
+    Bundle 'tpope/vim-markdown'
     Bundle 'tpope/vim-repeat'
     Bundle 'tpope/vim-surround'
+    Bundle 'tsaleh/vim-matchit'
+    Bundle 'skwp/greplace.vim'
+    Bundle 'vim-scripts/mru.vim'
     Bundle 'vim-scripts/taglist.vim'
-    Bundle 'sickill/vim-pasta'
     Bundle 'xuhdev/SingleCompile'
-
-    " vim-scripts repos
-    Bundle 'matchit.zip'
-    Bundle 'mru.vim'
     
     filetype plugin indent on     " required!
 
-    " Brief help
     " :BundleList          - list configured bundles
     " :BundleInstall(!)    - install(update) bundles
     " :BundleSearch(!) foo - search(or refresh cache first) for foo
     " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
     " Make sure to install vundle first, just paste in a term:
     " git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+" }
 
 " General {
-
-    " change leader to ,'
     let mapleader = ","
     set mouse=a
     set backspace=indent,eol,start
-
-    " Use english as the main language
-    if has('mac') || has('macunix')
-        language en_US
-    endif
-
     set wildmenu
     set wildignore+=*.o,*.obj,*.git,*.class,*.rbc,.svn,vendor/gems/*
+
     set smartindent
     set autoindent
     set shiftwidth=4
@@ -67,28 +64,18 @@
     set smarttab
 
     set scrolloff=999
+    " set report=0
     set encoding=utf-8
+    set autochdir "dir of current file
+    set gdefault "search/replace globally
 
-    " Switch to working directory of the current file
-    set autochdir
-    " Always search/replace globally
-    set gdefault
-
-    " Automatically open, but do not go to (if there are errors) the quickfix /
-    " location list window, or close it when is has become empty.
-    "
-    " Note: Must allow nesting of autocmds to enable any customizations for 
-    " quickfix buffers.
-    " Note: Normally, :cwindow jumps to the quickfix window if the command 
-    " opens it (but not if it's already open). 
-    " However, as part of the autocmd, this doesn't seem to happen.
-    autocmd QuickFixCmdPost [^l]* nested cwindow
-    autocmd QuickFixCmdPost    l* nested lwindow
-
+    " Use english as the main language
+    if has('mac') || has('macunix')
+        language en_US
+    endif
 " }
 
 " Keymappings {
-
     " Yank from the cursor to the end of the line, to be consistent with
     " C and D commands.
     nnoremap Y y$
@@ -107,10 +94,7 @@
     " CRTL + N removes highlighting of searched text
     nmap <silent> <C-N> :noh<CR>
 
-    " CRTL + S enables spell checking (Swedish)
     map <silent> <C-S> :setlocal spell! spelllang=sv<CR>
-
-    " CRTL + L enables spell checking (English)
     map <silent> <C-L> :setlocal spell! spelllang=en<CR>
 
     " CTRL + J splits the line at the cursor
@@ -124,8 +108,10 @@
     noremap <space> za
 
     " Enable easier navigation in help-mode
-    nmap <buffer> <CR> <C-]>
-    nmap <buffer> <BS> <C-T>
+    " TODO For some reason doesn't work
+    " has to be in ftplugin/help.vim
+    " nnoremap <buffer> <CR> <C-]>
+    " nnoremap <buffer> <BS> <C-T>
 
     map <F10> :cprevious<Return>
     map <F11> :cnext<Return>
@@ -133,10 +119,17 @@
     " Terminal mappings - uses command in GUI instead
     map <C-b> :SCCompile<Return>
     map <C-S-b> :SCCompileRun<Return>
-    map <C-r> :MRU<Return>
 " }
 
 " Apperance {
+    if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+        syntax on
+    endif
+
+    if has('mac') || has('macunix')
+        set bg=dark
+        colorscheme solarized
+    endif
 
     " Status line
     set laststatus=2
@@ -169,21 +162,30 @@
 
 " }
 
-" Plugin options { 
+" Plugins { 
+    " auto-pairs
+        " doesn't get along with some unicode chars
+        let g:AutoPairsShortcuts = ""
+        let g:AutoPairsShortcutFastWrap = ""
+        let g:AutoPairsShortcutJump = ""
 
-    " Taglist settings {
-        map <silent> <F8> :TlistToggle<CR>
+    " easymotion
+        let g:EasyMotion_leader_key = '<Leader>'
+    
+    " Taglist
+        map <silent> <F10> :TlistToggle<CR>
 
-        " Taglist options
         let Tlist_Show_One_File=1
         let Tlist_GainFocus_On_ToggleOpen=1
         let Tlist_Exit_OnlyWindow=1
         let Tlist_Enable_Fold_Column=0
         let Tlist_Show_Menu=1
-    " }
+
+    " MakeGreen
+        map <C-t> :MakeGreen<CR>
     
-    " NERDTree settings {
-        map <silent> <F7> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
+    " NERDTree 
+        map <silent> <F11> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
 
         let NERDTreeShowBookmarks=1
         let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
@@ -191,61 +193,59 @@
         let NERDTreeQuitOnOpen=1
         let NERDTreeShowHidden=1
         let NERDTreeKeepTreeInNewTab=1
-    " }    
 
-    " Jedi settings {
+    " Jedi 
         " let g:jedi#popup_on_dot = 0
 
-    " Supertab settings {
+    " Supertab settings 
         " Enable simultaneous use with snipMate
         let g:SuperTabDefaultCompletionType = "context"
         set completeopt=menuone,longest,preview
-    " }
 
     " todo thingie
     " from https://coderwall.com/p/prfnnw
         command Todo noautocmd vimgrep /TODO\|FIXME/j ** | cw
 
-    " SingleCompile commands {
+    " SingleCompile commands
         command Make SCCompile
         command Run SCCompileRun
         command Log SCViewResult
         let g:SingleCompile_showquickfixiferror = 1
-    " }
-    
+
 " }
 
 " Filetype Settings {
-
     "Use LaTeX syntax When editing a .text-file 
     let g:tex_flavor='latex'
 
     " TODO: This should really be tidied up
-    " try to choose the best compiler automatically
-    au BufRead * try | execute "compiler ".&filetype | catch /./ | endtry
-
-    " HTML settings {
+    " HTML 
         au BufNewFile,Bufread *.html set columns=89
         au BufNewFile,Bufread *.html set shiftwidth=2
         au BufNewFile,Bufread *.html set tabstop=2
-    " }
 
-    " Java settings {
+    " Go
+        "Automatically reformat using gofmt when saving go buffers
+        autocmd FileType go autocmd BufWritePre <buffer> Fmt
+        au BufNewFile,Bufread *.go set shiftwidth=4
+        au BufNewFile,Bufread *.go set tabstop=4
+        au BufNewFile,Bufread *.go set noexpandtab
+
+    " Java 
         autocmd Filetype java set makeprg=javac\ %
         set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
-    " }
 
-    " Ruby settings {
+    " Ruby 
         au BufRead,BufNewFile {Gemfile,Rakefile} set ft=ruby
         au BufNewFile,Bufread *.rb set shiftwidth=2
         au BufNewFile,Bufread *.rb set tabstop=2
-    " }
 
-    " Python settings {
+    " Python 
         " supertab doesn't work...
         inoremap <C-space> <C-x><C-o>
+        autocmd BufNewFile,BufRead *.py compiler nose
 
-    " TeX settings {
+    " TeX 
         au BufNewFile,Bufread *.tex set shiftwidth=2
         au BufNewFile,Bufread *.tex set tabstop=2
         au BufNewFile,Bufread *.tex set wrap
@@ -254,14 +254,47 @@
         if has("gui_running")
             au BufNewFile,Bufread *.tex set bg=light
         endif
-      " }
 
-    " C settings {
+    " .ini
+        au BufNewFile,Bufread *.ini set shiftwidth=2
+        au BufNewFile,Bufread *.ini set tabstop=2
+
+    " C 
         if has('mac') || has('macunix')
             au BufNewFile,Bufread *.c compiler clang
             au BufNewFile,Bufread *.c set makeprg=clang
             au BufNewFile,Bufread *.h compiler clang
             au BufNewFile,Bufread *.h set makeprg=clang
         endif
-    " }
+" }
+
+" Other autocmds {
+    " ruthlessly stolen from 
+    " https://github.com/thoughtbot/dotfiles/blob/master/vimrc
+    augroup vimrcEx
+        au!
+
+        " For all text files set 'textwidth' to 79 characters.
+        autocmd FileType text setlocal textwidth=79
+
+        " When editing a file, always jump to the last known cursor position.
+        " Don't do it when the position is invalid or when inside an event handler
+        " (happens when dropping a file on gvim).
+        autocmd BufReadPost *
+          \ if line("'\"") > 0 && line("'\"") <= line("$") |
+          \   exe "normal g`\"" |
+          \ endif
+    augroup END
+
+    " Note: Maybe this causes conflict with SingleCompile,
+    " empty quickfix window remains open
+    " Automatically open, but do not go to (if there are errors) the quickfix /
+    " location list window, or close it when is has become empty.
+    " Note: Must allow nesting of autocmds to enable any customizations for 
+    " quickfix buffers.
+    " Note: Normally, :cwindow jumps to the quickfix window if the command 
+    " opens it (but not if it's already open). 
+    " However, as part of the autocmd, this doesn't seem to happen.
+    autocmd QuickFixCmdPost [^l]* nested cwindow
+    autocmd QuickFixCmdPost    l* nested lwindow
 " }
