@@ -20,21 +20,25 @@
     Bundle 'jiangmiao/auto-pairs'
     Bundle 'jnwhiteh/vim-golang'
     Bundle 'kien/ctrlp.vim'
-    Bundle 'michaeljsmith/vim-indent-object'
+    " Bundle 'michaeljsmith/vim-indent-object'
     Bundle 'msanders/snipmate.vim'
     Bundle 'nvie/vim-flake8'
     Bundle 'olethanh/Vim-nosecompiler'
     Bundle 'reinh/vim-makegreen'
     Bundle 'scrooloose/nerdtree'
+    " Bundle 'scrooloose/syntastic'
     Bundle 'sickill/vim-pasta'
+    Bundle 'skwp/greplace.vim'
     Bundle 'tomtom/tcomment_vim'
+    Bundle 'tpope/vim-dispatch'
     Bundle 'tpope/vim-endwise'
+    Bundle 'tpope/vim-eunuch'
     Bundle 'tpope/vim-fugitive'
     Bundle 'tpope/vim-markdown'
+    Bundle 'tpope/vim-obsession'
     Bundle 'tpope/vim-repeat'
     Bundle 'tpope/vim-surround'
     Bundle 'tsaleh/vim-matchit'
-    Bundle 'skwp/greplace.vim'
     Bundle 'vim-scripts/mru.vim'
     Bundle 'vim-scripts/taglist.vim'
     Bundle 'xuhdev/SingleCompile'
@@ -227,6 +231,7 @@
     " Go
         "Automatically reformat using gofmt when saving go buffers
         autocmd FileType go autocmd BufWritePre <buffer> Fmt
+		autocmd Filetype go set makeprg=go\ build
         au BufNewFile,Bufread *.go set shiftwidth=4
         au BufNewFile,Bufread *.go set tabstop=4
         au BufNewFile,Bufread *.go set noexpandtab
@@ -287,7 +292,6 @@
     augroup END
 
     " Note: Maybe this causes conflict with SingleCompile,
-    " empty quickfix window remains open
     " Automatically open, but do not go to (if there are errors) the quickfix /
     " location list window, or close it when is has become empty.
     " Note: Must allow nesting of autocmds to enable any customizations for 
@@ -296,5 +300,5 @@
     " opens it (but not if it's already open). 
     " However, as part of the autocmd, this doesn't seem to happen.
     autocmd QuickFixCmdPost [^l]* nested cwindow
-    autocmd QuickFixCmdPost    l* nested lwindow
+    " autocmd QuickFixCmdPost    l* nested lwindow
 " }
